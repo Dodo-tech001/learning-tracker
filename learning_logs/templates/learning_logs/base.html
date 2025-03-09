@@ -9,6 +9,7 @@
   {% bootstrap_javascript jquery='full' %}
 
   <style>
+    /* Dark mode styles */
     body.dark-mode {
       background-color: #121212;
       color: #e0e0e0;
@@ -18,25 +19,35 @@
       background-color: #1f1f1f !important;
     }
 
-    .dark-mode .navbar-text,
-    .dark-mode .nav-link {
+    .dark-mode .container,
+    .dark-mode .card,
+    .dark-mode .form-control {
+      background-color: #1e1e1e !important;
+      color: #e0e0e0;
+    }
+
+    .dark-mode a,
+    .dark-mode .nav-link,
+    .dark-mode .navbar-text {
       color: #e0e0e0 !important;
     }
 
-    .dark-mode .btn-light {
-      background-color: #333 !important;
-      color: #fff !important;
-      border: 1px solid #555;
+    .dark-mode .btn {
+      background-color: #444;
+      color: white;
+      border: none;
     }
 
-    .dark-mode .border-bottom {
-      border-color: #444 !important;
+    .dark-mode input,
+    .dark-mode textarea {
+      background-color: #2c2c2c;
+      color: white;
+      border: 1px solid #555;
     }
   </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-md navbar-dark bg-primary mb-4">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
     <div class="container">
       <a class="navbar-brand" href="{% url 'learning_logs:index' %}">Learning Log</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
@@ -56,20 +67,15 @@
           {% endif %}
         </ul>
 
-        <ul class="navbar-nav ml-auto align-items-center">
-          <!-- 🌙 Dark Mode Toggle -->
-          <li class="nav-item mr-2">
-            <button id="darkModeToggle" class="btn btn-sm btn-light">Dark Mode</button>
-          </li>
-
+        <ul class="navbar-nav ml-auto">
           {% if user.is_authenticated %}
             <li class="nav-item">
-              <span class="navbar-text text-light">Hello, {{ user.username }}</span>
+              <span class="navbar-text">Hello, {{ user.username }}</span>
             </li>
-            <li class="nav-item">
-              <form action="{% url 'users:logout' %}" method="post" class="form-inline ml-2">
+            <li class="nav-item ml-2">
+              <form action="{% url 'users:logout' %}" method="post" class="form-inline">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-sm btn-light">Log out</button>
+                <button type="submit" class="btn btn-sm btn-outline-light">Log out</button>
               </form>
             </li>
           {% else %}
@@ -85,7 +91,6 @@
     </div>
   </nav>
 
-  <!-- Main Content -->
   <main role="main" class="container">
     <div class="pb-2 mb-4 border-bottom">
       {% block page_header %}{% endblock page_header %}
@@ -96,13 +101,10 @@
   </main>
 
   <script>
-    const toggleButton = document.getElementById('darkModeToggle');
-    const body = document.body;
-
-    toggleButton.addEventListener('click', () => {
-      body.classList.toggle('dark-mode');
-      toggleButton.textContent = body.classList.contains('dark-mode') ? 'Light Mode' : 'Dark Mode';
-    });
+    // Optional: Auto-detect dark mode based on system preference
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.body.classList.add('dark-mode');
+    }
   </script>
 </body>
 </html>
