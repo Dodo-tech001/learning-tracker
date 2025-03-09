@@ -1,35 +1,62 @@
 {% load bootstrap4 %}
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Learning Log</title>
   {% bootstrap_css %}
   {% bootstrap_javascript jquery='full' %}
+
   <style>
     body.dark-mode {
       background-color: #121212;
-      color: #e0e0e0;
+      color: #f1f1f1;
     }
 
-    .navbar.dark-mode,
-    .card.dark-mode {
+    .dark-mode .navbar {
       background-color: #1f1f1f;
+      border-color: #2c2c2c;
     }
 
-    .dark-mode .nav-link,
-    .dark-mode .navbar-brand {
+    .dark-mode .navbar a,
+    .dark-mode .navbar-text,
+    .dark-mode .nav-link {
       color: #f1f1f1 !important;
     }
 
-    .dark-mode .btn-link {
-      color: #bb86fc !important;
+    .dark-mode a {
+      color: #90caf9;
+    }
+
+    .dark-mode .card,
+    .dark-mode .form-control,
+    .dark-mode .form-group {
+      background-color: #1e1e1e;
+      color: #f1f1f1;
+      border-color: #333;
+    }
+
+    .dark-mode .btn-primary {
+      background-color: #1976d2;
+      border-color: #1976d2;
+    }
+
+    .dark-mode hr {
+      border-color: #333;
+    }
+
+    .dark-toggle {
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: inherit;
+      font-size: 1rem;
     }
   </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border" id="main-navbar">
+  <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
     <a class="navbar-brand" href="{% url 'learning_logs:index' %}">Learning Log</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" 
             aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,11 +74,11 @@
         </li>
         {% endif %}
       </ul>
-
-      <!-- Dark Mode Toggle -->
-      <button id="toggleDarkMode" class="btn btn-sm btn-outline-secondary mr-3">🌙</button>
-
+      
       <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <button id="darkModeToggle" class="dark-toggle nav-link">🌓</button>
+        </li>
         {% if user.is_authenticated %}
           <li class="nav-item">
             <span class="navbar-text">Hello, {{ user.username }}.</span>
@@ -86,18 +113,16 @@
   </main>
 
   <script>
-    const toggleButton = document.getElementById("toggleDarkMode");
-    const body = document.body;
+    const toggleBtn = document.getElementById('darkModeToggle');
+    const isDark = localStorage.getItem('darkMode') === 'true';
 
-    // Check saved theme
-    if (localStorage.getItem("theme") === "dark") {
-      body.classList.add("dark-mode");
+    if (isDark) {
+      document.body.classList.add('dark-mode');
     }
 
-    toggleButton.addEventListener("click", function () {
-      body.classList.toggle("dark-mode");
-      const theme = body.classList.contains("dark-mode") ? "dark" : "light";
-      localStorage.setItem("theme", theme);
+    toggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
     });
   </script>
 </body>
