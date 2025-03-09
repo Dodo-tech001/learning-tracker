@@ -1,6 +1,6 @@
 {% load bootstrap4 %}
 <!doctype html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,59 +10,49 @@
 
   <style>
     body.dark-mode {
-      background-color: #121212;
-      color: #f1f1f1;
+      background-color: #121212 !important;
+      color: #ffffff !important;
     }
-
+    .navbar, .card, .border-bottom {
+      transition: background-color 0.3s, color 0.3s;
+    }
     .dark-mode .navbar {
-      background-color: #1f1f1f;
-      border-color: #2c2c2c;
+      background-color: #1f1f1f !important;
     }
-
-    .dark-mode .navbar a,
-    .dark-mode .navbar-text,
-    .dark-mode .nav-link {
-      color: #f1f1f1 !important;
+    .dark-mode .card {
+      background-color: #2c2c2c;
+      color: #ffffff;
     }
-
-    .dark-mode a {
-      color: #90caf9;
+    .dark-mode .border-bottom {
+      border-bottom: 1px solid #444 !important;
     }
-
-    .dark-mode .card,
-    .dark-mode .form-control,
-    .dark-mode .form-group {
-      background-color: #1e1e1e;
-      color: #f1f1f1;
-      border-color: #333;
-    }
-
-    .dark-mode .btn-primary {
-      background-color: #1976d2;
-      border-color: #1976d2;
-    }
-
-    .dark-mode hr {
-      border-color: #333;
-    }
-
-    .dark-toggle {
-      cursor: pointer;
-      border: none;
-      background: none;
-      color: inherit;
-      font-size: 1rem;
+    .dark-mode .nav-link, .dark-mode .navbar-brand {
+      color: #fff !important;
     }
   </style>
+
+  <script>
+    function toggleDarkMode() {
+      const body = document.body;
+      body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+      }
+    });
+  </script>
 </head>
 <body>
   <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
     <a class="navbar-brand" href="{% url 'learning_logs:index' %}">Learning Log</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" 
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
             aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    
+
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
@@ -74,11 +64,8 @@
         </li>
         {% endif %}
       </ul>
-      
+
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <button id="darkModeToggle" class="dark-toggle nav-link">🌓</button>
-        </li>
         {% if user.is_authenticated %}
           <li class="nav-item">
             <span class="navbar-text">Hello, {{ user.username }}.</span>
@@ -99,31 +86,20 @@
             <a class="nav-link" href="{% url 'users:login' %}">Log in</a>
           </li>
         {% endif %}
+        <li class="nav-item">
+          <button class="btn btn-sm btn-outline-secondary ml-2" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+        </li>
       </ul>
     </div>
   </nav>
-  
+
   <main role="main" class="container">
     <div class="pb-2 mb-2 border-bottom">
       {% block page_header %}{% endblock page_header %}
     </div>
-    <div>
+    <div class="card p-3">
       {% block content %}{% endblock content %}
     </div>
   </main>
-
-  <script>
-    const toggleBtn = document.getElementById('darkModeToggle');
-    const isDark = localStorage.getItem('darkMode') === 'true';
-
-    if (isDark) {
-      document.body.classList.add('dark-mode');
-    }
-
-    toggleBtn.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-    });
-  </script>
 </body>
 </html>
