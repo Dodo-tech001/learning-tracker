@@ -7,8 +7,35 @@
   <title>Learning Log</title>
   {% bootstrap_css %}
   {% bootstrap_javascript jquery='full' %}
+
+  <style>
+    body.dark-mode {
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+
+    .dark-mode .navbar {
+      background-color: #1f1f1f !important;
+    }
+
+    .dark-mode .navbar-text,
+    .dark-mode .nav-link {
+      color: #e0e0e0 !important;
+    }
+
+    .dark-mode .btn-light {
+      background-color: #333 !important;
+      color: #fff !important;
+      border: 1px solid #555;
+    }
+
+    .dark-mode .border-bottom {
+      border-color: #444 !important;
+    }
+  </style>
 </head>
 <body>
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-md navbar-dark bg-primary mb-4">
     <div class="container">
       <a class="navbar-brand" href="{% url 'learning_logs:index' %}">Learning Log</a>
@@ -29,7 +56,12 @@
           {% endif %}
         </ul>
 
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav ml-auto align-items-center">
+          <!-- 🌙 Dark Mode Toggle -->
+          <li class="nav-item mr-2">
+            <button id="darkModeToggle" class="btn btn-sm btn-light">Dark Mode</button>
+          </li>
+
           {% if user.is_authenticated %}
             <li class="nav-item">
               <span class="navbar-text text-light">Hello, {{ user.username }}</span>
@@ -53,6 +85,7 @@
     </div>
   </nav>
 
+  <!-- Main Content -->
   <main role="main" class="container">
     <div class="pb-2 mb-4 border-bottom">
       {% block page_header %}{% endblock page_header %}
@@ -61,5 +94,15 @@
       {% block content %}{% endblock content %}
     </div>
   </main>
+
+  <script>
+    const toggleButton = document.getElementById('darkModeToggle');
+    const body = document.body;
+
+    toggleButton.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      toggleButton.textContent = body.classList.contains('dark-mode') ? 'Light Mode' : 'Dark Mode';
+    });
+  </script>
 </body>
 </html>
