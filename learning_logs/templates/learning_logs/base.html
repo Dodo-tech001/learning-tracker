@@ -1,6 +1,6 @@
 {% load bootstrap4 %}
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -33,13 +33,25 @@
       color: #f1f1f1;
     }
 
-    .toggle-switch {
-      position: absolute;
-      right: 1rem;
+    .dark-mode .border-bottom {
+      border-color: #444 !important;
     }
 
-    .toggle-switch input {
-      margin-top: 10px;
+    .form-switch {
+      display: flex;
+      align-items: center;
+      margin-left: 1rem;
+    }
+
+    .form-switch input {
+      margin-left: 0.5rem;
+      width: 40px;
+      height: 20px;
+    }
+
+    .form-switch label {
+      margin-bottom: 0;
+      color: #fff;
     }
   </style>
 </head>
@@ -84,11 +96,12 @@
             </li>
           {% endif %}
         </ul>
-      </div>
 
-      <!-- Dark Mode Toggle Switch -->
-      <div class="toggle-switch">
-        <input type="checkbox" id="darkModeToggle" title="Toggle Dark Mode">
+        <!-- Dark mode toggle -->
+        <div class="form-switch">
+          <label for="darkModeToggle" class="text-light">Dark Mode</label>
+          <input type="checkbox" id="darkModeToggle">
+        </div>
       </div>
     </div>
   </nav>
