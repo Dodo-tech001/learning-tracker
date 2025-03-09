@@ -10,48 +10,31 @@
   <style>
     body.dark-mode {
       background-color: #121212;
-      color: #f1f1f1;
+      color: #ffffff;
     }
 
-    .dark-mode .navbar {
+    body.dark-mode .navbar {
       background-color: #1f1f1f !important;
     }
 
-    .dark-mode .navbar .nav-link,
-    .dark-mode .navbar .navbar-brand,
-    .dark-mode .navbar-text {
-      color: #f1f1f1 !important;
+    body.dark-mode .card,
+    body.dark-mode .jumbotron,
+    body.dark-mode .form-control,
+    body.dark-mode .btn {
+      background-color: #2a2a2a !important;
+      color: #ffffff !important;
     }
 
-    .dark-mode .btn-primary {
-      background-color: #4a90e2;
-      border-color: #4a90e2;
+    body.dark-mode a {
+      color: #aad3ff !important;
     }
 
-    .dark-mode .jumbotron {
-      background-color: #1f1f1f;
-      color: #f1f1f1;
-    }
-
-    .dark-mode .border-bottom {
+    body.dark-mode input,
+    body.dark-mode textarea,
+    body.dark-mode select {
+      background-color: #2a2a2a !important;
+      color: #ffffff !important;
       border-color: #444 !important;
-    }
-
-    .form-switch {
-      display: flex;
-      align-items: center;
-      margin-left: 1rem;
-    }
-
-    .form-switch input {
-      margin-left: 0.5rem;
-      width: 40px;
-      height: 20px;
-    }
-
-    .form-switch label {
-      margin-bottom: 0;
-      color: #fff;
     }
   </style>
 </head>
@@ -76,13 +59,13 @@
           {% endif %}
         </ul>
 
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav ml-auto align-items-center">
           {% if user.is_authenticated %}
             <li class="nav-item">
-              <span class="navbar-text text-light">Hello, {{ user.username }}</span>
+              <span class="navbar-text text-light mr-2">Hello, {{ user.username }}</span>
             </li>
             <li class="nav-item">
-              <form action="{% url 'users:logout' %}" method="post" class="form-inline ml-2">
+              <form action="{% url 'users:logout' %}" method="post" class="form-inline">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-sm btn-light">Log out</button>
               </form>
@@ -95,13 +78,16 @@
               <a class="nav-link" href="{% url 'users:login' %}">Log in</a>
             </li>
           {% endif %}
-        </ul>
 
-        <!-- Dark mode toggle -->
-        <div class="form-switch">
-          <label for="darkModeToggle" class="text-light">Dark Mode</label>
-          <input type="checkbox" id="darkModeToggle">
-        </div>
+          <!-- Dark Mode Toggle -->
+          <li class="nav-item ml-3">
+            <div class="form-switch d-flex align-items-center">
+              <span id="theme-icon" class="mr-2" style="font-size: 1.2rem;">☀️</span>
+              <label for="darkModeToggle" class="text-light mb-0 mr-2">Dark Mode</label>
+              <input type="checkbox" id="darkModeToggle">
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
@@ -115,23 +101,27 @@
     </div>
   </main>
 
+  <!-- Dark mode toggle script -->
   <script>
     const toggle = document.getElementById('darkModeToggle');
     const body = document.body;
+    const icon = document.getElementById('theme-icon');
 
-    // Load saved mode
     if (localStorage.getItem('theme') === 'dark') {
       body.classList.add('dark-mode');
       toggle.checked = true;
+      icon.textContent = '🌙';
     }
 
     toggle.addEventListener('change', function () {
       if (this.checked) {
         body.classList.add('dark-mode');
         localStorage.setItem('theme', 'dark');
+        icon.textContent = '🌙';
       } else {
         body.classList.remove('dark-mode');
         localStorage.setItem('theme', 'light');
+        icon.textContent = '☀️';
       }
     });
   </script>
