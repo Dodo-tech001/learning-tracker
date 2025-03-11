@@ -1,7 +1,15 @@
 {% extends 'learning_logs/base.html' %}
 
 {% block page_header %}
-  <h3>{{ topic }}</h3>
+  <div class="d-flex justify-content-between align-items-center">
+    <h3>{{ topic }}</h3>
+    {% if user == topic.owner %}
+      <form action="{% url 'learning_logs:delete_topic' topic.id %}" method="post" onsubmit="return confirm('Are you sure you want to delete this topic and all its entries?');">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger btn-sm">Delete Topic</button>
+      </form>
+    {% endif %}
+  </div>
 {% endblock page_header %}
 
 {% block content %}
